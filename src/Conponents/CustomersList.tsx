@@ -1,4 +1,4 @@
-import type { Customer } from "../Conponents/Types.ts";
+import type { Customer } from "./Types.ts";
 import React, { useState, useEffect, useMemo } from "react";
 import {
   useReactTable,
@@ -22,7 +22,6 @@ export default function CustomersList() {
         return response.json();
       })
       .then(customers => {
-        console.log(customers)
         setCustomers(customers._embedded?.customers ?? []);
       })
       .catch(err => console.error(err))

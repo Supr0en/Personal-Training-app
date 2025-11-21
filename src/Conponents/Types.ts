@@ -5,6 +5,11 @@ type CustomerLinks = {
   customer: Link;
   trainings: Link;
 };
+type TrainingLinks = {
+  self: Link,
+  training: Link,
+  customer: Link,
+}
 
 export type Customer = {
   firstname: string;
@@ -17,3 +22,9 @@ export type Customer = {
   _links: CustomerLinks;
 };
 
+export type Training = {
+  date: string,
+  duration: number,
+  activity: string,
+  _links: TrainingLink;
+}
