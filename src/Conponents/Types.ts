@@ -26,5 +26,9 @@ export type Training = {
   date: string,
   duration: number,
   activity: string,
-  _links: TrainingLink;
+  _links: TrainingLinks,
+  details: {
+    firstname: string,
+    lastname: string,
+  }
 }

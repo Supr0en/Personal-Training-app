@@ -52,16 +52,16 @@ export default function CustomersList() {
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     defaultColumn: {
-      size: 200,
+      size: 150,
       minSize: 50,
-      maxSize: 200,
+      maxSize: 150,
     } 
   });
 
   return (
     <>
       <h1>CustomersList</h1>
-      <table className="border">
+      <table className="border ml-auto mr-auto">
       <thead className="bg-gray-100">
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>

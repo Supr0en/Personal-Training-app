@@ -1,4 +1,5 @@
 import type { Training } from "./Types";
+import dayjs from 'dayjs';
 import React, { useState, useEffect, useMemo } from "react";
 import {
   useReactTable,
@@ -12,6 +13,7 @@ export default function TrainingsList(){
   const [trainings, setTrainings] = useState<Training[]>([]);
   useEffect(() => {
     fetchTrainings();
+    console.log(trainings)
   }, []);
 
   const fetchTrainings = () => {
@@ -24,13 +26,34 @@ export default function TrainingsList(){
         return response.json();
       })
       .then(trainings => {
-        setTrainings(trainings._embedded?.trainings ?? []);
+        const list = trainings._embedded?.trainings ?? [];
+
+        return Promise.all(
+          list.map(training =>
+            fetch(training._links.customer.href)
+              .then(res => res.json())
+              .then(details => ({
+                ...training,
+                details: {
+                  firstname: details.firstname,
+                  lastname: details.lastname,
+                },
+            }))
+          )
+        );
+      })
+      .then(fullTtrainings => {
+        setTrainings(fullTtrainings)
       })
       .catch(err => console.error(err))
   };
+
   const columns: ColumnDef<Training>[] = useMemo(
     () => [
-      { header: "Date", accessorKey: "date", meta: { type: "string" } },
+      { header: "Date", accessorKey: "date", meta: { type: "string" }, cell: info => {
+        const rawDate = info.getValue() as string;
+        return dayjs(rawDate).format('DD/MM/YYYY hh:mm')
+      } },
       { header: "Duration", accessorKey: "duration", meta: { type: "number" }, 
         filterFn: (row, columnId, filterValue) => {
           const cellValue = row.getValue(columnId);
@@ -42,6 +65,8 @@ export default function TrainingsList(){
         },
       },
       { header: "Activity", accessorKey: "activity", meta: { type: "string" } },
+      { header: "FirstName", accessorKey: "details.firstname", meta: { type: "string" } },
+      { header: "LastName", accessorKey: "details.lastname", meta: { type: "string" } }
     ],
     []
   );
@@ -57,15 +82,15 @@ export default function TrainingsList(){
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     defaultColumn: {
-      size: 200,
+      size: 150,
       minSize: 50,
-      maxSize: 200,
+      maxSize: 150,
     }
   });
   return (
     <>
       <h1>TrainingsList</h1>
-      <table className="border">
+      <table className="border ml-auto mr-auto">
       <thead className="bg-gray-100">
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
