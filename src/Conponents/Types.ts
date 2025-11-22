@@ -32,3 +32,5 @@ export type Training = {
     lastname: string,
   }
 }
+
+export type CustomerForm = Omit<Customer, "_links">;

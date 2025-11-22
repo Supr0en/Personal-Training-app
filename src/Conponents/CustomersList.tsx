@@ -1,5 +1,6 @@
 import type { Customer } from "./Types.ts";
 import React, { useState, useEffect, useMemo } from "react";
+import { getCustomers } from "../Api.ts";
 import {
   useReactTable,
   getCoreRowModel,
@@ -7,26 +8,20 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
+import AddCustomerForm from "./AddCustomerForm.tsx";
+
 export default function CustomersList() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   useEffect(() => {
     fetchCustomers();
   }, []);
-
+  
   const fetchCustomers = () => {
-    fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/customers")
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(
-            "Error when fetching customers" + response.statusText,
-          );
-        return response.json();
-      })
-      .then(customers => {
-        setCustomers(customers._embedded?.customers ?? []);
-      })
-      .catch(err => console.error(err))
-  };
+    getCustomers()
+      .then(customerData => setCustomers(customerData._embedded.customers))
+      .catch((error) => console.log(error));
+  }
+
   const columns: ColumnDef<Customer>[] = useMemo(
     () => [
       { header: "First Name", accessorKey: "firstname" },
@@ -61,6 +56,7 @@ export default function CustomersList() {
   return (
     <>
       <h1>CustomersList</h1>
+      <AddCustomerForm fetchCustomers={fetchCustomers()} />
       <table className="border ml-auto mr-auto">
       <thead className="bg-gray-100">
         {table.getHeaderGroups().map(headerGroup => (
