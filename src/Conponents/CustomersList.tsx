@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   flexRender,
   getSortedRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 export default function CustomersList() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -39,6 +40,7 @@ export default function CustomersList() {
     []
   );
   const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
   const table = useReactTable({
     data: customers,
     columns,
@@ -46,23 +48,40 @@ export default function CustomersList() {
     onSortingChange: setSorting,
     getRowId: row => row.email,
     getSortedRowModel : getSortedRowModel(),
-    state: { sorting },
+    state: { sorting, columnFilters },
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    defaultColumn: {
+      size: 200,
+      minSize: 50,
+      maxSize: 200,
+    } 
   });
 
   return (
     <>
       <h1>CustomersList</h1>
-      <table className="min-w-full border">
+      <table className="border">
       <thead className="bg-gray-100">
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map(header => (
-              <th key={header.id} className="p-2 border-b text-left" onClick={header.column.getToggleSortingHandler()}>
+              <th key={header.id} className="p-2 border-b text-center" onClick={header.column.getToggleSortingHandler()}>
+                {header.column.getCanFilter() && (
+                  <input
+                    type="text"
+                    placeholder="Filter..."
+                    value={(header.column.getFilterValue() ?? "") as string}
+                    onChange={e => header.column.setFilterValue(e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                )}
                 {flexRender(header.column.columnDef.header, header.getContext())}
                 {{
                   asc: " 🔼",
                   desc: " 🔽",
-                }[header.column.getIsSorted() as string] ?? null}              </th>
+                }[header.column.getIsSorted() as string] ?? null}              
+              </th>
             ))}
           </tr>
         ))}
@@ -71,7 +90,7 @@ export default function CustomersList() {
         {table.getRowModel().rows.map(row => (
           <tr key={row.id} className="hover:bg-gray-50">
             {row.getVisibleCells().map(cell => (
-              <td key={cell.id} className="p-2 border-b">
+              <td key={cell.id} className="p-2 border-b text-center">
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}
