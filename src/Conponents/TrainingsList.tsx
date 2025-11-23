@@ -13,7 +13,6 @@ export default function TrainingsList(){
   const [trainings, setTrainings] = useState<Training[]>([]);
   useEffect(() => {
     fetchTrainings();
-    console.log(trainings)
   }, []);
 
   const fetchTrainings = () => {

@@ -51,7 +51,7 @@ export default function AddCustomerForm({fetchCustomers}: addCustomerProps) {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-transparent">
           <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
-            <h2 className="text-lg font-bold mb-4">Dialog Title</h2>
+            <h2 className="text-lg font-bold mb-4">Add new Customer</h2>
             <div className="mb-4">
               <input type='text' placeholder='kela' value={customerData.firstname} onChange={event => setCustomerData({...customerData, firstname: event.target.value})} />
               <input type='text' placeholder='kelamaa' value={customerData.lastname} onChange={event => setCustomerData({...customerData, lastname: event.target.value})} />

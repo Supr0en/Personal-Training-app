@@ -22,5 +22,13 @@ export function saveCustomer(newCustomer: CustomerForm ) {
           throw new Error("Failed to create Customer: " + response.statusText);
         response.json();
     })
-  }
+}
 
+export function deleteCustomer(url: string) {
+  fetch(url, { method: 'DELETE' })
+    .then((response) => {
+      if(!response.ok)
+        throw new Error("Failed to delete Customer: " + response.statusText);
+      response.json();
+    })
+}
