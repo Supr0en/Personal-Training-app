@@ -1,6 +1,6 @@
 import type { Training } from "./Types";
 import dayjs from 'dayjs';
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -8,25 +8,19 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
+import AddTrainingForm from "./AddTrainingForm";
+import { getTrainings, deleteTraining } from "../TraininingApi";
 
 export default function TrainingsList(){
   const [trainings, setTrainings] = useState<Training[]>([]);
   useEffect(() => {
     fetchTrainings();
   }, []);
-
+  
   const fetchTrainings = () => {
-    fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings")
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(
-            "Error when fetching customers" + response.statusText,
-          );
-        return response.json();
-      })
+    getTrainings()
       .then(trainings => {
         const list = trainings._embedded?.trainings ?? [];
-
         return Promise.all(
           list.map(training =>
             fetch(training._links.customer.href)
@@ -44,8 +38,15 @@ export default function TrainingsList(){
       .then(fullTtrainings => {
         setTrainings(fullTtrainings)
       })
-      .catch(err => console.error(err))
+      .catch(error => console.error(error))
   };
+  const handleDelete = (url: string) => {
+    if (window.confirm("Are you sure?")) {
+      deleteTraining(url)
+        .then(() => fetchTrainings())
+        .catch((error) => console.log(error))
+    }
+  }
 
   const columns: ColumnDef<Training>[] = useMemo(
     () => [
@@ -65,7 +66,17 @@ export default function TrainingsList(){
       },
       { header: "Activity", accessorKey: "activity", meta: { type: "string" } },
       { header: "FirstName", accessorKey: "details.firstname", meta: { type: "string" } },
-      { header: "LastName", accessorKey: "details.lastname", meta: { type: "string" } }
+      { header: "LastName", accessorKey: "details.lastname", meta: { type: "string" } },
+      { id: "actions", header: "Actions",
+        cell: ({ row }) => {
+          const deleteUrl = row.original._links.self.href;
+          return (
+            <div className="flex gap-2">
+              <button className="px-3 py-1 bg-blue-500 text-white rounded" onClick={() => {handleDelete(deleteUrl)}}>Delete</button>
+            </div>
+          );
+        }
+      },
     ],
     []
   );
@@ -89,6 +100,7 @@ export default function TrainingsList(){
   return (
     <>
       <h1>TrainingsList</h1>
+      <AddTrainingForm fetchTrainings={fetchTrainings()} />
       <table className="border ml-auto mr-auto">
       <thead className="bg-gray-100">
         {table.getHeaderGroups().map(headerGroup => (
