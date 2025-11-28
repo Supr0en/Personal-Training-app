@@ -44,8 +44,8 @@ export default function AddCustomerForm({fetchCustomers}: addCustomerProps) {
   }
   return (
     <>
-      <button onClick={() => {handleOpen()}} className="px-4 py-2 bg-blue-500 text-white rounded">
-        Open Dialog
+      <button onClick={() => {handleOpen()}} className="px-4 py-2 m-1 bg-blue-500 text-white rounded">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
       </button>
 
       {open && (
