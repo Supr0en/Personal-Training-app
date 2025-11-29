@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { Customer, TrainingForm, TrainingFormWCustomer } from './Types';
+import type { Customer, TrainingFormWCustomer } from './Types';
 import { saveTraining } from '../TraininingApi';
 import { getCustomers } from '../Api';
 import DatePicker from "react-datepicker";
@@ -40,8 +40,8 @@ export default function AddTrainingForm({fetchTrainings}: addTrainingProps) {
   }
 
   const handleSave = () => {
-    const { customerLink, ...payload } = trainingData;
-    saveTraining(payload as TrainingForm)
+    //const { customer, ...payload } = trainingData;
+    saveTraining(trainingData)
       .then(() => {
         fetchTrainings();
       })
