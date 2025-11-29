@@ -111,7 +111,7 @@ export default function TrainingsList(){
               <th key={header.id} className="p-2 border-b text-center" onClick={header.column.getToggleSortingHandler()}>
                 {header.column.getCanFilter() && (
                   <input
-                    type={header.column.columnDef.meta?.type}
+                    type={header.column.columnDef.meta.type}
                     placeholder="Filter..."
                     value={(header.column.getFilterValue() ?? "") as string}
                     onChange={e => header.column.setFilterValue(e.target.value)}
