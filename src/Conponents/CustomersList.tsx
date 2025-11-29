@@ -8,8 +8,11 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
+import type { ColumnFiltersState, SortingState } from "@tanstack/react-table";
 import EditCustomerForm from "./EditCustomerForm.tsx";
 import AddCustomerForm from "./AddCustomerForm.tsx";
+import type { ColumnDef, Row } from "@tanstack/react-table";
+
 export default function CustomersList() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   useEffect(() => {
@@ -19,14 +22,14 @@ export default function CustomersList() {
   const fetchCustomers = () => {
     getCustomers()
       .then(customerData => setCustomers(customerData._embedded.customers))
-      .catch((error) => console.log(error));
+      .catch((error: Error) => console.log(error));
   }
 
   const handleDelete = (url: string) => {
     if (window.confirm("Are you sure?")) {
       deleteCustomer(url)
         .then(() => fetchCustomers())
-        .catch((error) => console.log(error))
+        .catch((error: Error) => console.log(error));
     }
   }
 
@@ -57,8 +60,8 @@ export default function CustomersList() {
     []
   );
 
-  const [sorting, setSorting] = useState([]);
-  const [columnFilters, setColumnFilters] = useState([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
     data: customers,
     columns,
@@ -76,11 +79,16 @@ export default function CustomersList() {
     } 
   });
 
-  const exportExcel = (table) => {
-    const rows: row<any>[] = table.getFilteredRowModel().rows;
-    const csvRows = rows.map(row => row.getVisibleCells().filter(cell => {
-      return cell.column.columnDef.accessorKey;
-    }).map(cell => `"${cell.getValue()}"`).join(','));
+  const exportExcel = <T,>(table: ReturnType<typeof useReactTable<T>>) => {
+    const rows: Row<T>[] = table.getFilteredRowModel().rows;
+    const csvRows: string[] = rows.map((row) => row.getVisibleCells().filter((cell): cell is typeof cell & {
+        column: { columnDef: {accessorKey: keyof T} };
+      } => 'accessorKey' in cell.column.columnDef      
+      ).map((cell) => {
+        const value = cell.getValue() as | string | number | boolean | null | undefined; 
+        return value !== undefined && value !== null ? `"${value}"` : '""';
+      }).join(',')
+    );
     const csvString = csvRows.join('\n');
     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);

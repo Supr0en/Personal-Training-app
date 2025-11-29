@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { CustomerForm, Customer } from "./Types";
 
-type EditCustomerForm = {
+type EditCustomerProps = {
   fetchCustomers: () => void;
   customerRow: Customer;
 }

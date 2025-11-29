@@ -1,7 +1,7 @@
 import { Calendar, Views, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
-import enUS from 'date-fns/locale/en-US';
+import {enUS} from 'date-fns/locale/en-US';
 import { useState, useEffect } from 'react';
 import { getTrainings } from '../TraininingApi';
 import type { Training } from './Types';

@@ -31,7 +31,16 @@ export type Training = {
     firstname: string,
     lastname: string,
   }
-}
+};
 
+export type TrainingCustomerForm = {
+  date: string,
+  duration: number,
+  activity: string,
+  customer: string,
+  _links: TrainingLinks,
+};
+
+export type TrainingFormWCustomer = Omit<TrainingCustomerForm, "_links">;
 export type TrainingForm = Omit<Training, "_links">;
 export type CustomerForm = Omit<Customer, "_links">;
