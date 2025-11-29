@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import type { TrainingFrom, Customer } from './Types';
+import type { Customer, TrainingForm, TrainingFormWCustomer } from './Types';
 import { saveTraining } from '../TraininingApi';
 import { getCustomers } from '../Api';
 import DatePicker from "react-datepicker";
@@ -12,7 +12,7 @@ type addTrainingProps = {
 export default function AddTrainingForm({fetchTrainings}: addTrainingProps) {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [open, setOpen] = useState(false);
-  const [trainingData, setTrainingData] = useState<TrainingFrom>({
+  const [trainingData, setTrainingData] = useState<TrainingFormWCustomer>({
     date: "",
     duration: 0,
     activity: "",
@@ -40,7 +40,8 @@ export default function AddTrainingForm({fetchTrainings}: addTrainingProps) {
   }
 
   const handleSave = () => {
-    saveTraining(trainingData)
+    const { customerLink, ...payload } = trainingData;
+    saveTraining(payload as TrainingForm)
       .then(() => {
         fetchTrainings();
       })
@@ -48,8 +49,8 @@ export default function AddTrainingForm({fetchTrainings}: addTrainingProps) {
   }
   return (
     <>
-      <button onClick={() => {handleOpen()}} className="px-4 py-2 bg-blue-500 text-white rounded">
-        Open Dialog
+      <button onClick={() => {handleOpen()}} className="px-4 py-2 m-1 bg-blue-500 text-white rounded">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg>
       </button>
 
       {open && (
@@ -62,7 +63,7 @@ export default function AddTrainingForm({fetchTrainings}: addTrainingProps) {
                 onChange={(date) =>
                   setTrainingData((prev) => ({
                     ...prev,
-                    date: date ? date.toISOString() : '', // store as ISO string
+                    date: date ? date.toISOString() : '',
                   }))
                 }
                 className="m-1 w-full p-1 border border-gray-300 rounded"
@@ -71,7 +72,7 @@ export default function AddTrainingForm({fetchTrainings}: addTrainingProps) {
                 dateFormat="dd/MM/yyyy hh:mm"
                 placeholderText="dd/MM/yyyy hh:mm"
               />
-              <input type='number' placeholder='30' value={trainingData.duration} onChange={event => setTrainingData({...trainingData, duration: event.target.value})} className="m-1 w-full p-1 border border-gray-300 rounded" />
+              <input type='number' placeholder='30' value={trainingData.duration} onChange={event => setTrainingData({...trainingData, duration: parseInt(event.target.value)})} className="m-1 w-full p-1 border border-gray-300 rounded" />
               <input type='text' placeholder='Workout' value={trainingData.activity} onChange={event => setTrainingData({...trainingData, activity: event.target.value})} className="m-1 w-full p-1 border border-gray-300 rounded" />
               <select onChange={event => setTrainingData({...trainingData, customer: event.target.value})} className="m-1 w-full p-1 border border-gray-300 rounded">
                 {customers.map(customer => (

@@ -5,8 +5,9 @@ import App from "./App.tsx";
 import CustomersList from "./Conponents/CustomersList.tsx";
 import TrainingsList from "./Conponents/TrainingsList.tsx";
 import Index from "./Conponents/Index.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router";
-const router = createBrowserRouter([
+import { createHashRouter, RouterProvider } from "react-router";
+import CalendarView from "./Conponents/CalendarView.tsx";
+const router = createHashRouter([
   {
     path: "/",
     element: <App />,
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
         path: "trainingslist",
         element: <TrainingsList />,
       },
+      {
+        path: "calendarview",
+        element: <CalendarView />,
+      }
     ],
   },
 ]);

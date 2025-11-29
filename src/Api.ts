@@ -1,6 +1,6 @@
 import type { CustomerForm } from "./Conponents/Types";
 
-export function getCustomers() {
+export function getCustomers(){
     return fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/customers")
       .then((response) => {
         if (!response.ok)
@@ -25,10 +25,10 @@ export function saveCustomer(newCustomer: CustomerForm ) {
 }
 
 export function deleteCustomer(url: string) {
-  fetch(url, { method: 'DELETE' })
+  return fetch(url, { method: 'DELETE' })
     .then((response) => {
       if(!response.ok)
         throw new Error("Failed to delete Customer: " + response.statusText);
       response.json();
-    })
+    });
 }

@@ -1,4 +1,3 @@
-// import './App.css'
 import { Link, Outlet } from "react-router";
 function App() {
   return (
@@ -9,6 +8,7 @@ function App() {
           <Link to="/">Homepage</Link>
           <Link to="/customerslist">Customers page</Link>
           <Link to="/trainingslist">Trainings page</Link>
+          <Link to="/calendarview">Calendar page</Link>
         </nav>
       </header>
       <Outlet />

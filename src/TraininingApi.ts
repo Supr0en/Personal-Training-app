@@ -11,7 +11,7 @@ export function getTrainings() {
       })
 }; 
 
-export function saveTraining(newTraining: TrainingForm ) {
+export function saveTraining( newTraining: TrainingForm ) {
     return fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings", {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -25,7 +25,7 @@ export function saveTraining(newTraining: TrainingForm ) {
 }
 
 export function deleteTraining(url: string) {
-  fetch(url, { method: 'DELETE' })
+  return fetch(url, { method: 'DELETE' })
     .then((response) => {
       if(!response.ok)
         throw new Error("Failed to delete Customer: " + response.statusText);
