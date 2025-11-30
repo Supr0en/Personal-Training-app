@@ -96,7 +96,8 @@ export default function TrainingsList(){
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map(header => (
-              <th key={header.id} className="p-2 border-b text-center" onClick={header.column.getToggleSortingHandler()}>
+              <th key={header.id} className="p-2 border-b" onClick={header.column.getToggleSortingHandler()}>
+              <div className="flex flex-col items-center text-center">
                 {header.column.getCanFilter() && (
                   <input
                     type="text"
@@ -111,6 +112,7 @@ export default function TrainingsList(){
                   asc: " 🔼",
                   desc: " 🔽",
                 }[header.column.getIsSorted() as string] ?? null}         
+              </div>
               </th>
             ))}
           </tr>

@@ -7,6 +7,7 @@ import { getTrainings } from '../TraininingApi';
 import type { Training } from './Types';
 import '../assets/styles/CalendarStyles.css';
 import type { ToolbarProps, View } from 'react-big-calendar';
+import { CustomToolbar } from './helpers/CustomToolbar';
 
 interface Event {
   title: string;
@@ -17,38 +18,6 @@ interface Event {
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
 
-function CustomToolbar(toolbar: ToolbarProps) {
-  const views: View[] = Array.isArray(toolbar.views) 
-    ? toolbar.views : 
-    Object.keys(toolbar.views ?? {}).filter(
-    (key): key is View => !!toolbar.views?.[key]
-  );
-
-  console.log(views)
-  return (
-    <div className="flex flex-wrap gap-2 justify-between items-center mb-4 p-2">
-      <span className="text-xl font-bold text-gray-800">
-        {toolbar.label}
-      </span>
-
-      <div className="flex gap-2">
-        {views.map((view: View) => (
-          <button
-            key={view}
-            onClick={() => toolbar.onView(view)}
-            className={`px-3 py-1 rounded-lg border text-sm ${
-              toolbar.view === view
-                ? "bg-slate-500 text-white border-slate-500"
-                : "border-gray-200 hover:bg-gray-100"
-            }`}
-          >
-            {view}
-          </button>
-        ))}
-      </div>
-    </div>
-  )
-}
 function CalendarView() {
   const [events, setEvents] = useState<Event[]>([]);
   useEffect(() => {
@@ -101,7 +70,7 @@ function CalendarView() {
       views={["month", "week", "day", "agenda"]}
       onView={(v: View) => setView(v)}
       style={{ height: 600 }}
-      components={{ toolbar: CustomToolbar }}
+      components={{ toolbar: CustomToolbar as React.ComponentType<ToolbarProps> }}
       toolbar={true}
     />
   )  
