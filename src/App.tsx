@@ -9,6 +9,7 @@ function App() {
           <Link to="/customerslist">Customers page</Link>
           <Link to="/trainingslist">Trainings page</Link>
           <Link to="/calendarview">Calendar page</Link>
+          <Link to="/chartsview">Charts page</Link>
         </nav>
       </header>
       <Outlet />

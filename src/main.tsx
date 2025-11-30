@@ -1,12 +1,15 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { createHashRouter, RouterProvider } from "react-router";
+
 import './index.css';
 import App from "./App.tsx";
+import Index from "./Conponents/Index.tsx";
 import CustomersList from "./Conponents/CustomersList.tsx";
 import TrainingsList from "./Conponents/TrainingsList.tsx";
-import Index from "./Conponents/Index.tsx";
-import { createHashRouter, RouterProvider } from "react-router";
 import CalendarView from "./Conponents/CalendarView.tsx";
+import ChartsView from "./Conponents/ChartsView.tsx";
+
 const router = createHashRouter([
   {
     path: "/",
@@ -27,6 +30,10 @@ const router = createHashRouter([
       {
         path: "calendarview",
         element: <CalendarView />,
+      },
+      {
+        path: "chartsview",
+        element: <ChartsView />,
       }
     ],
   },
