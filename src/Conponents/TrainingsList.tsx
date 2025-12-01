@@ -65,7 +65,7 @@ export default function TrainingsList(){
           const deleteUrl = row.original._links.self.href;
           return (
             <div className="flex gap-2">
-              <button className="px-3 py-1 bg-blue-500 text-white rounded" onClick={() => {handleDelete(deleteUrl)}}>
+              <button className="px-3 py-1 bg-red-500 text-white rounded" onClick={() => {handleDelete(deleteUrl)}}>
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
               </button>
             </div>
@@ -86,22 +86,18 @@ export default function TrainingsList(){
     state: { sorting, columnFilters },
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    defaultColumn: {
-      size: 150,
-      minSize: 50,
-      maxSize: 150,
-    }
   });
   return (
     <>
       <h1>TrainingsList</h1>
       <AddTrainingForm fetchTrainings={fetchTrainings} />
       <table className="border ml-auto mr-auto">
-      <thead className="bg-gray-100">
+      <thead className="bg-slate-500 text-white">
         {table.getHeaderGroups().map(headerGroup => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map(header => (
-              <th key={header.id} className="p-2 border-b text-center" onClick={header.column.getToggleSortingHandler()}>
+              <th key={header.id} className="p-2 border-b" onClick={header.column.getToggleSortingHandler()}>
+              <div className="flex flex-col items-center text-center">
                 {header.column.getCanFilter() && (
                   <input
                     type="text"
@@ -116,12 +112,13 @@ export default function TrainingsList(){
                   asc: " 🔼",
                   desc: " 🔽",
                 }[header.column.getIsSorted() as string] ?? null}         
+              </div>
               </th>
             ))}
           </tr>
         ))}
       </thead>
-      <tbody>
+      <tbody className="bg-slate-100">
         {table.getRowModel().rows.map(row => (
           <tr key={row.id} className="hover:bg-gray-50">
             {row.getVisibleCells().map(cell => (

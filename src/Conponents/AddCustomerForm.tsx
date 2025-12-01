@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CustomerForm } from './Types';
-import { saveCustomer } from '../Api';
+import { saveCustomer } from '../CustomerApi';
 
 type addCustomerProps = {
   fetchCustomers: () => void;
@@ -53,13 +53,13 @@ export default function AddCustomerForm({fetchCustomers}: addCustomerProps) {
           <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
             <h2 className="text-lg font-bold mb-4">Add new Customer</h2>
             <div className="mb-4">
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='kela' value={customerData.firstname} onChange={event => setCustomerData({...customerData, firstname: event.target.value})} />
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='kelamaa' value={customerData.lastname} onChange={event => setCustomerData({...customerData, lastname: event.target.value})} />
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='6 street' value={customerData.streetaddress} onChange={event => setCustomerData({...customerData, streetaddress: event.target.value})} />
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='00100' value={customerData.postcode} onChange={event => setCustomerData({...customerData, postcode: event.target.value})} />
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='Helsinki' value={customerData.city} onChange={event => setCustomerData({...customerData, city: event.target.value})} />
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='kela@esimerkki.com' value={customerData.email} onChange={event => setCustomerData({...customerData, email: event.target.value})} />
-              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='323-23456789' value={customerData.phone} onChange={event => setCustomerData({...customerData, phone: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='Harvey' value={customerData.firstname} onChange={event => setCustomerData({...customerData, firstname: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='Specter' value={customerData.lastname} onChange={event => setCustomerData({...customerData, lastname: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='Manhattan' value={customerData.streetaddress} onChange={event => setCustomerData({...customerData, streetaddress: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='10005' value={customerData.postcode} onChange={event => setCustomerData({...customerData, postcode: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='New York City' value={customerData.city} onChange={event => setCustomerData({...customerData, city: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='harvey-specter@Suits.com' value={customerData.email} onChange={event => setCustomerData({...customerData, email: event.target.value})} />
+              <input className="m-1 w-full p-1 border border-gray-300 rounded" type='text' placeholder='(212)555-5678' value={customerData.phone} onChange={event => setCustomerData({...customerData, phone: event.target.value})} />
             </div>
             <button onClick={handleClose} className="px-4 py-2 bg-red-500 text-white rounded"> 
               Close

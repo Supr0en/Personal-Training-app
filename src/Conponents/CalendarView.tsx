@@ -1,10 +1,13 @@
-import { Calendar, Views, dateFnsLocalizer } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import {enUS} from 'date-fns/locale/en-US';
 import { useState, useEffect } from 'react';
 import { getTrainings } from '../TraininingApi';
 import type { Training } from './Types';
+import '../assets/styles/CalendarStyles.css';
+import type { ToolbarProps, View } from 'react-big-calendar';
+import { CustomToolbar } from './helpers/CustomToolbar';
 
 interface Event {
   title: string;
@@ -56,16 +59,18 @@ function CalendarView() {
         console.error('Error fetching trainings:', error);
       });
   }, []);
+  const [view, setView] = useState<View>('week');
   return (
     <Calendar 
       localizer={localizer}
       events={events}
       startAccessor="start"
       endAccessor="end"
-      defaultView={Views.WEEK}
-      views={[Views.WEEK, Views.DAY, Views.MONTH]}
-      onView={() => {}}
+      view={view}
+      views={["month", "week", "day", "agenda"]}
+      onView={(v: View) => setView(v)}
       style={{ height: 600 }}
+      components={{ toolbar: CustomToolbar as React.ComponentType<ToolbarProps> }}
       toolbar={true}
     />
   )  

@@ -1,4 +1,4 @@
-import type { TrainingForm } from "./Conponents/Types";
+import type {TrainingFormWCustomer} from "./Conponents/Types";
 
 export function getTrainings() {
     return fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings")
@@ -11,7 +11,7 @@ export function getTrainings() {
       })
 }; 
 
-export function saveTraining( newTraining: TrainingForm ) {
+export function saveTraining( newTraining: TrainingFormWCustomer ) {
     return fetch("https://customer-rest-service-frontend-personaltrainer.2.rahtiapp.fi/api/trainings", {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
